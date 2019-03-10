@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block content %}
+    {% if incarcerations %}
+      {% for incarceration in incarcerations %}
+          <article class="media content-section">
+            <div class="media-body">
+              <div class="article-metadata">
+                <a class="mr-2" href="{% url 'contact-detail' contact.id %}">{{ incarceration.person.name }}</a>
+              </div>
+            </div>
+          </article>
+      {% endfor %}
+    {% else %}
+      <p>No incarcerations</p>
+    {% endif %}
+{% endblock content %}

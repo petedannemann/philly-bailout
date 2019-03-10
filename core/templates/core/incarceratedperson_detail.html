@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block content %}
+  <article class="media content-section">
+    <div class="media-body">
+      <div>
+        <h2>
+          {% if pronoun %}{{ object.pronoun }}{% endif %}
+          Name: {{ object.first_name}} {{ object.last_name }}
+        </h2>
+        <p>Race: {{ object.race }}</p>
+        <p>{{ object.date_of_birth }}</p>
+        <p>{{ object.open_to_speaking_to_the_press }}</p>
+        <p>{{ object.ok_with_being_photographed }}</p>
+        <p>{{ object.phone_number }}</p>
+      </div>
+      <div>
+        <a class="btn btn-secondary btn-sm mt-1 mb-1" href="{% url 'incarceratedperson-update' object.id %}">Update</a>
+        <a class="btn btn-danger btn-sm mt-1 mb-1" href="{% url 'incarceratedperson-delete' object.id %}">Delete</a>
+      </div>
+    </div>
+  </article>
+{% endblock content %}

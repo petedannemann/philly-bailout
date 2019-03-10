@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block content %}
+    {% if contacts %}
+      {% for contact in contacts %}
+          <article class="media content-section">
+            <div class="media-body">
+              <a class="mr-2" href="{% url 'contact-detail' contact.id %}">
+                {{ contact.name }}
+              </a>
+            </div>
+          </article>
+      {% endfor %}
+    {% else %}
+      <p>No contacts</p>
+    {% endif %}
+{% endblock content %}
