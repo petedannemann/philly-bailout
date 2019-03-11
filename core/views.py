@@ -13,11 +13,14 @@ from core.models import (
     Incarceration,
     Contact,
 )
+from core.forms import IncarcerationForm
 
 
 class IncarceratedPersonListView(ListView):
     model = IncarceratedPerson
     context_object_name = 'incarcerated_persons'
+    ordering = ['-updated_at']
+    paginate_by = 5
 
 class IncarceratedPersonCreateView(CreateView):
     model = IncarceratedPerson
@@ -37,10 +40,12 @@ class IncarceratedPersonDeleteView(DeleteView):
 class IncarcerationListView(ListView):
     model = Incarceration
     context_object_name = 'incarcerations'
+    ordering = ['-updated_at']
+    paginate_by = 5
 
 class IncarcerationCreateView(CreateView):
     model = Incarceration
-    fields = '__all__'
+    form_class = IncarcerationForm
 
 class IncarcerationDetailView(DetailView):
     model = Incarceration

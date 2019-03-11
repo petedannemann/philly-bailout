@@ -10,6 +10,8 @@ class Person(models.Model):
     first_name = models.CharField(max_length=255, unique=False, blank=False)
     last_name = models.CharField(max_length=255, unique=False, blank=False)
     phone_number = models.CharField(max_length=25, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return f'{self.first_name} {self.last_name}'
@@ -55,6 +57,8 @@ class Charge(models.Model):
 
 class Facility(models.Model):
     name = models.CharField(max_length=255, unique=True, blank=False)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
     # It would probably be useful to have address and facility contact information here
 
     def __str__(self):
@@ -77,6 +81,8 @@ class Incarceration(models.Model):
     opt_in_for_additional_resources = models.BooleanField(default=False)
     attachment = models.FileField(upload_to='documents/', blank=True)
     notes = models.CharField(max_length=255)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return f'{self.__class__.__name__}({self.person.name}, {self.date_incarcerated})'
