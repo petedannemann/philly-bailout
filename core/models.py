@@ -2,11 +2,14 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.urls import reverse
 
+from multiselectfield import MultiSelectField
+
 
 class Person(models.Model):
     '''Abstract base class for making a person'''
     first_name = models.CharField(max_length=255, unique=False, blank=False)
     last_name = models.CharField(max_length=255, unique=False, blank=False)
+    phone_number = models.CharField(max_length=25, blank=True)
 
     def __str__(self):
         return f'{self.first_name} {self.last_name}'
@@ -20,25 +23,24 @@ class IncarceratedPerson(Person):
     )
 
     RACE_CHOICES = (
-        ('AFRICAN-AMERICAN', 'African-American'),
-        ('HISPANIC', 'Hispanic'),
+        ('AFRICAN AMERICAN', 'African American'),
+        ('AMERICAN INDIAN', 'American Indian'),
         ('ASIAN', 'Asian'),
-        ('CAUCASIAN', 'Caucasian'),
+        ('HISPANIC OR LATINO', 'Hispanic or Latino'),
+        ('NATIVE HAWAIIAN OR OTHER PACIFIC ISLANDER', 'Native Hawaiian or Other Pacific Islander'),
+        ('WHITE', 'White'),
     )
     
     pronoun = models.CharField(max_length=4, choices=PRONOUN_CHOICES, blank=True)
-    #TODO: Make this a multi-choice field with a plugin
-    race = models.CharField(max_length=255, choices=RACE_CHOICES, blank=False) 
+    race = MultiSelectField(choices=RACE_CHOICES, blank=False) 
     date_of_birth = models.DateField(blank=True)
     open_to_speaking_to_the_press = models.BooleanField(default=False)
     ok_with_being_photographed = models.BooleanField(default=False)
-    phone_number = models.CharField(max_length=25)
 
     def get_absolute_url(self):
         return reverse('incarceratedperson-detail', kwargs={'pk': self.pk})
 
 class Contact(Person):
-    phone_number = models.CharField(max_length=25)
     email = models.EmailField(blank=False)
     notes = models.CharField(max_length=255)
 
@@ -71,6 +73,9 @@ class Incarceration(models.Model):
     contacts = models.ForeignKey(Contact, on_delete=models.CASCADE, blank=False, related_name='contact')
     support_caller = models.ForeignKey(User, on_delete=models.CASCADE)
     date_support_call_completed = models.DateField()
+    support_funding_source = models.CharField(max_length=255, blank=True)
+    opt_in_for_additional_resources = models.BooleanField(default=False)
+    attachment = models.FileField(upload_to='documents/', blank=True)
     notes = models.CharField(max_length=255)
 
     def __str__(self):
