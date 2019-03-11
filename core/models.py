@@ -6,15 +6,20 @@ from multiselectfield import MultiSelectField
 
 
 class Person(models.Model):
-    '''Abstract base class for making a person'''
+    '''Abstract base class for making a person.'''
     first_name = models.CharField(max_length=255, unique=False, blank=False)
     last_name = models.CharField(max_length=255, unique=False, blank=False)
     phone_number = models.CharField(max_length=25, blank=True)
+    notes = models.CharField(max_length=255, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
-    def __str__(self):
+    @property
+    def name(self):
         return f'{self.first_name} {self.last_name}'
+
+    def __str__(self):
+        return self.name
 
 class IncarceratedPerson(Person):
     PRONOUN_CHOICES = (
@@ -44,7 +49,6 @@ class IncarceratedPerson(Person):
 
 class Contact(Person):
     email = models.EmailField(blank=False)
-    notes = models.CharField(max_length=255)
 
     def get_absolute_url(self):
         return reverse('contact-detail', kwargs={'pk': self.pk})
@@ -80,7 +84,6 @@ class Incarceration(models.Model):
     support_funding_source = models.CharField(max_length=255, blank=True)
     opt_in_for_additional_resources = models.BooleanField(default=False)
     attachment = models.FileField(upload_to='documents/', blank=True)
-    notes = models.CharField(max_length=255)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 

@@ -1,16 +1,40 @@
 {% extends "base.html" %}
 {% block content %}
-    {% if incarcerations %}
-      {% for incarceration in incarcerations %}
-          <article class="media content-section">
-            <div class="media-body">
-              <div class="article-metadata">
-                <a class="mr-2" href="{% url 'contact-detail' contact.id %}">{{ incarceration.person.name }}</a>
-              </div>
-            </div>
-          </article>
-      {% endfor %}
-    {% else %}
-      <p>No incarcerations</p>
-    {% endif %}
+  <h2>Incarcerations</h2>
+  <div class="table-responsive">
+    <table class="table table-hover table-striped table-bordered" style="width: auto;">
+      <thead>
+        <tr>
+          <th scope="col">Name</th>
+          <th scope="col">Date Incarcerated</th>
+          <th scope="col">Date Bail Set</th>
+          <th scope="col">Date of Jail Interview</th>
+          <th scope="col">Created At</th>
+          <th scope="col">Last Updated</th>
+          <th scope="col">Details</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for incarceration in incarcerations %}
+          <tr>
+            <td>
+              <a class="mr-2" href="{% url 'incarceratedperson-detail' incarceration.person.id %}">
+                {{ incarceration.person.name }}
+              </a>
+            </td>
+            <td>{{ incarceration.date_incarcerated }}</td>
+            <td>{{ incarceration.date_bail_set }}</td>
+            <td>{{ incarceration.date_of_jail_interview }}</td>
+            <td>{{ incarceration.created_at }}</td>
+            <td>{{ incarceration.updated_at }}</td>
+            <td>
+              <a class="mr-2" href="{% url 'incarceration-detail' incarceration.id %}">
+                Link
+              </a>
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
 {% endblock content %}

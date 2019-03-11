@@ -1,22 +1,56 @@
 {% extends "base.html" %}
 {% block content %}
-  <article class="media content-section">
-    <div class="media-body">
-      <div>
-        <h2>
-          {% if pronoun %}{{ object.pronoun }}{% endif %}
-          Name: {{ object.first_name}} {{ object.last_name }}
-        </h2>
-        <p>Race: {{ object.race }}</p>
-        <p>{{ object.date_of_birth }}</p>
-        <p>{{ object.open_to_speaking_to_the_press }}</p>
-        <p>{{ object.ok_with_being_photographed }}</p>
-        <p>{{ object.phone_number }}</p>
-      </div>
-      <div>
-        <a class="btn btn-secondary btn-sm mt-1 mb-1" href="{% url 'incarceratedperson-update' object.id %}">Update</a>
-        <a class="btn btn-danger btn-sm mt-1 mb-1" href="{% url 'incarceratedperson-delete' object.id %}">Delete</a>
-      </div>
-    </div>
-  </article>
+  <h2>Incarcerated Person Details</h2>
+  <div class="table-responsive">
+    <table class="table table-hover table-bordered" style="width: auto;">
+      <tbody>
+        <tr>
+          <th class="table-active">Name</th>
+          <td>
+            {% if object.pronoun %}{{ object.pronoun }}{% endif %} {{ object.first_name}} {{ object.last_name }}
+          </td>
+        </tr>
+        <tr>
+          <th class="table-active">Race</th>
+          <td>{{ object.race }}</td>
+        </tr>
+        <tr>
+          <th class="table-active">Date of Birth</th>
+          <td>{{ object.date_of_birth }}</td>
+        </tr>
+        <tr>
+          <th class="table-active">Open to Speaking to the Press</th>
+          <td>
+            {{ object.open_to_speaking_to_the_press|yesno:"Yes,No" }}
+          </td>
+        </tr>
+        <tr>
+          <th class="table-active">Ok with Being Photographed</th>
+          <td>
+            {{ object.ok_with_being_photographed|yesno:"Yes,No" }}
+          </td>
+        </tr>
+        <tr>
+          <th class="table-active">Phone Number</th>
+          <td>{{ object.phone_number }}</td>
+        </tr>
+        <tr>
+          <th class="table-active">Notes</th>
+          <td>{{ object.notes }}</td>
+        </tr>
+        <tr>
+          <th class="table-active">Created At</th>
+          <td>{{ object.created_at }}</td>
+        </tr>
+        <tr>
+          <th class="table-active">Updated At</th>
+          <td>{{ object.updated_at }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div>
+    <a class="btn btn-secondary btn-sm mt-1 mb-1" href="{% url 'incarceratedperson-update' object.id %}">Update</a>
+    <a class="btn btn-danger btn-sm mt-1 mb-1" href="{% url 'incarceratedperson-delete' object.id %}">Delete</a>
+  </div>
 {% endblock content %}

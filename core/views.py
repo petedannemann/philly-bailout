@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.views.generic import (
     ListView,
     DetailView,
@@ -13,25 +13,19 @@ from core.models import (
     Incarceration,
     Contact,
 )
-from core.forms import IncarcerationForm
+from core.forms import IncarcerationForm, IncarceratedPersonForm
 
-
-class IncarceratedPersonListView(ListView):
-    model = IncarceratedPerson
-    context_object_name = 'incarcerated_persons'
-    ordering = ['-updated_at']
-    paginate_by = 5
 
 class IncarceratedPersonCreateView(CreateView):
     model = IncarceratedPerson
-    fields = '__all__'
+    form_class = IncarceratedPersonForm
 
 class IncarceratedPersonDetailView(DetailView):
     model = IncarceratedPerson
 
 class IncarceratedPersonUpdateView(UpdateView):
     model = IncarceratedPerson
-    fields = '__all__'
+    form_class = IncarceratedPersonForm
 
 class IncarceratedPersonDeleteView(DeleteView):
     model = IncarceratedPerson
@@ -52,7 +46,7 @@ class IncarcerationDetailView(DetailView):
 
 class IncarcerationUpdateView(UpdateView):
     model = Incarceration
-    fields = '__all__'
+    form_class = IncarcerationForm
 
 class IncarcerationDeleteView(DeleteView):
     model = Incarceration
@@ -61,6 +55,10 @@ class IncarcerationDeleteView(DeleteView):
 class ContactListView(ListView):
     model = Contact
     context_object_name = 'contacts'
+
+    def get_queryset(self):
+        incarcerated_person = get_object_or_404(IncarceratedPerson, pk=self.kwargs.get('pk'))
+        return incarcerated_person.contacts
 
 class ContactCreateView(CreateView):
     model = Contact

@@ -46,8 +46,6 @@
                 <a class="dropdown-item" href="{% url 'incarceration-list' %}">View Incarcerations</a>
                 <a class="dropdown-item" href="{% url 'incarceration-create' %}">Create Incarcerations</a>
                 <div class="dropdown-divider"></div>
-                <a class="dropdown-item" href="{% url 'incarceratedperson-list' %}">View Incarcerated People</a>
-                <a class="dropdown-item" href="{% url 'incarceratedperson-create' %}">Create Incarcerated People</a>
               </div>
             </li>
           </ul>
@@ -64,9 +62,11 @@
               </div>
             {% endfor %} 
           {% endif %} 
-          {% block content %}
-          {% endblock %}
         </div>
+      </div>
+      <div class="mt-5">
+        {% block content %}
+        {% endblock %}
       </div>
     </main>
 

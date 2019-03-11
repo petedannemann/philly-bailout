@@ -1,18 +1,104 @@
 {% extends "base.html" %}
 {% block content %}
-  <article class="media content-section">
-    <div class="media-body">
-      <div>
-        <h2>
-          {% if pronoun %}{{ object.person.pronoun }}{% endif %}
-          Name: {{ object.person.first_name}} {{ object.person.last_name }}
-        </h2>
-        <p>{{ object.referral_date }}</p>
-      </div>
-    </div>
+  <h2>Incarceration Details</h2>
+  <div class="table-responsive">
+    <table class="table table-hover table-bordered" style="width: auto;">
+      <tbody>
+        <tr>
+          <th class="table-active">Name</th>
+          <td>
+            <a class="mr-2" href="{% url 'incarceratedperson-detail' incarceration.person.id %}">
+              {{ incarceration.person.name }}
+            </a>
+          </td>
+        </tr>
+        <tr>
+          <th class="table-active">Referral Date</th>
+          <td>{{ incarceration.referral_date }}</td>
+        </tr>
+        <tr>
+          <th class="table-active">Referred By</th>
+          <td>{{ incarceration.referred_by }}</td>
+        </tr>
+        <tr>
+          <th class="table-active">Date Incarcerated</th>
+          <td>{{ incarceration.date_incarcerated }}</td>
+        </tr>
+        <tr>
+          <th class="table-active">Date Bail Set</th>
+          <td>{{ incarceration.date_bail_set }}</td>
+        </tr>
+        <tr>
+          <th class="table-active">Date of Jail Interview</th>
+          <td>{{ incarceration.date_of_jail_interview }}</td>
+        </tr>
+        <tr>
+          <th class="table-active">Bail Amount</th>
+          <td>${{ incarceration.bail_amount }}</td>
+        </tr>
+        <tr>
+          <th class="table-active">Facility</th>
+          <td>{{ incarceration.facility }}</td>
+        </tr>
+        <tr>
+          <th class="table-active">Docket Number</th>
+          <td>{{ incarceration.docket_number }}</td>
+        </tr>
+        <tr>
+          <th class="table-active">Support Caller</th>
+          <td>{{ incarceration.support_caller }} <{{ incarceration.support_caller.email }}></td>
+        </tr>
+        <tr>
+          <th class="table-active">Date Support Call Completed</th>
+          <td>{{ incarceration.date_support_call_completed }}</td>
+        </tr>
+        <tr>
+          <th class="table-active">Support Funding Source</th>
+          <td>{{ incarceration.support_funding_source }}</td>
+        </tr>
+        <tr>
+          <th class="table-active">Opt in for Additional Resources</th>
+          <td>{{ incarceration.opt_in_for_additional_resources|yesno:"Yes,No" }}</td>
+        </tr>
+        <tr>
+          <th class="table-active">Created At</th>
+          <td>{{ incarceration.created_at }}</td>
+        </tr>
+        <tr>
+          <th class="table-active">Updated At</th>
+          <td>{{ incarceration.updated_at }}</td>
+      </tbody>
+    </table>
+  </div>
+  <h2>Contacts</h2>
+  <div class="table-responsive">
+    <table class="table table-hover table-striped table-bordered" style="width: auto;">
+      <thead>
+        <tr>
+          <th scope="col">Name</th>
+          <th scope="col">Phone Number</th>
+          <th scope="col">Email</th>
+          <th scope="col">Notes</th>
+          <th scope="col">Created At</th>
+          <th scope="col">Last Updated</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>
+            {{ incarceration.contacts.name }}
+          </td>
+          <td>{{ incarceration.contacts.phone_number }}</td>
+          <td>{{ incarceration.contacts.email }}</td>
+          <td>{{ incarceration.contacts.notes }}</td>
+          <td>{{ incarceration.contacts.created_at }}</td>
+          <td>{{ incarceration.contacts.updated_at }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
     <div>
       <a class="btn btn-secondary btn-sm mt-1 mb-1" href="{% url 'incarceration-update' object.id %}">Update</a>
       <a class="btn btn-danger btn-sm mt-1 mb-1" href="{% url 'incarceration-delete' object.id %}">Delete</a>
     </div>
-  </article>
 {% endblock content %}
