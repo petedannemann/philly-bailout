@@ -26,3 +26,7 @@ class IncarceratedPersonForm(forms.ModelForm):
         widgets = {
             'date_of_birth': DateInput(),
         }
+
+class IncarcerationSearchForm(forms.Form):
+    first_name = forms.CharField(required=False)
+    last_name = forms.CharField(required=False)

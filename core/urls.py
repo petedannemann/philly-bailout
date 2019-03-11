@@ -19,12 +19,12 @@ from core.views import (
 from . import views
 
 urlpatterns = [
-    path('', TemplateView.as_view(template_name='index.html'), name='home'),
+    path('', IncarcerationListView.as_view(), name='incarceration-list'),
+    path('about', TemplateView.as_view(template_name='about.html'), name='about'),
     path('incarceratedperson/new/', IncarceratedPersonCreateView.as_view(), name='incarceratedperson-create'),
     path('incarceratedperson/<int:pk>/', IncarceratedPersonDetailView.as_view(), name='incarceratedperson-detail'),
     path('incarceratedperson/<int:pk>/update/', IncarceratedPersonUpdateView.as_view(), name='incarceratedperson-update'),
     path('incarceratedperson/<int:pk>/delete/', IncarceratedPersonDeleteView.as_view(), name='incarceratedperson-delete'),
-    path('incarceration/', IncarcerationListView.as_view(), name='incarceration-list'),
     path('incarceration/new/', IncarcerationCreateView.as_view(), name='incarceration-create'),
     path('incarceration/<int:pk>/', IncarcerationDetailView.as_view(), name='incarceration-detail'),
     path('incarceration/<int:pk>/update/', IncarcerationUpdateView.as_view(), name='incarceration-update'),
