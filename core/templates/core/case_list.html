@@ -2,11 +2,11 @@
 {% block content %}
   <div class="row">
     <div class="col-6">
-      <h2>Incarcerations</h2>
+      <h2>Cases</h2>
     </div>
     <div class="col-6 text-right">
-      <a class="dropdown-item" href="{% url 'incarceration-create' %}">
-        <button type="button" class="btn btn-primary">Create an Incarceration</button>
+      <a class="dropdown-item" href="{% url 'case-create' %}">
+        <button type="button" class="btn btn-primary">Create a Case</button>
       </a>
     </div>
   </div>
@@ -24,20 +24,20 @@
         </tr>
       </thead>
       <tbody>
-        {% for incarceration in incarcerations %}
+        {% for case in cases %}
           <tr>
             <td>
-              <a class="mr-2" href="{% url 'incarceratedperson-detail' incarceration.person.id %}">
-                {{ incarceration.person.name }}
+              <a class="mr-2" href="{% url 'incarceratedperson-detail' case.person.id %}">
+                {{ case.person.name }}
               </a>
             </td>
-            <td>{{ incarceration.date_incarcerated }}</td>
-            <td>{{ incarceration.date_bail_set }}</td>
-            <td>{{ incarceration.date_of_jail_interview }}</td>
-            <td>{{ incarceration.created_at }}</td>
-            <td>{{ incarceration.updated_at }}</td>
+            <td>{{ case.date_incarcerated }}</td>
+            <td>{{ case.date_bail_set }}</td>
+            <td>{{ case.date_of_jail_interview }}</td>
+            <td>{{ case.created_at }}</td>
+            <td>{{ case.updated_at }}</td>
             <td>
-              <a class="mr-2" href="{% url 'incarceration-detail' incarceration.id %}">
+              <a class="mr-2" href="{% url 'case-detail' case.id %}">
                 Link
               </a>
             </td>

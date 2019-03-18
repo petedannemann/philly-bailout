@@ -14,16 +14,16 @@ from django.db.models import Q
 from django.urls import reverse_lazy
 
 from core.models import (
-    IncarceratedPerson, Incarceration, Contact,
+    Client, Case, Contact,
 )
 from core.forms import (
-    IncarcerationForm, IncarceratedPersonForm, IncarcerationSearchForm,
+    CaseForm, ClientForm, CaseSearchForm,
 )
 
 
-class IncarceratedPersonCreateView(SuccessMessageMixin, CreateView):
-    model = IncarceratedPerson
-    form_class = IncarceratedPersonForm
+class ClientCreateView(SuccessMessageMixin, CreateView):
+    model = Client
+    form_class = ClientForm
     success_message = "%(name)s was created successfully."
 
     def get_success_message(self, cleaned_data):
@@ -32,12 +32,12 @@ class IncarceratedPersonCreateView(SuccessMessageMixin, CreateView):
             name=self.object.name,
         )
 
-class IncarceratedPersonDetailView(DetailView):
-    model = IncarceratedPerson
+class ClientDetailView(DetailView):
+    model = Client
 
-class IncarceratedPersonUpdateView(SuccessMessageMixin, UpdateView):
-    model = IncarceratedPerson
-    form_class = IncarceratedPersonForm
+class ClientUpdateView(SuccessMessageMixin, UpdateView):
+    model = Client
+    form_class = ClientForm
     success_message = "%(name)s was updated successfully."
 
     def get_success_message(self, cleaned_data):
@@ -46,26 +46,26 @@ class IncarceratedPersonUpdateView(SuccessMessageMixin, UpdateView):
             name=self.object.name,
         )
 
-class IncarceratedPersonDeleteView(SuccessMessageMixin, DeleteView):
-    model = IncarceratedPerson
-    success_url = reverse_lazy('incarcerations-list')
+class ClientDeleteView(SuccessMessageMixin, DeleteView):
+    model = Client
+    success_url = reverse_lazy('cases-list')
     success_message = "%(name)s was deleted successfully."
 
     def delete(self, request, *args, **kwargs):
         obj = self.get_object()
         messages.success(self.request, self.success_message % obj.__dict__)
-        return super(IncarceratedPersonDeleteView, self).delete(request, *args, **kwargs)
+        return super(ClientDeleteView, self).delete(request, *args, **kwargs)
 
-class IncarcerationListView(ListView):
-    model = Incarceration
-    context_object_name = 'incarcerations'
+class CaseListView(ListView):
+    model = Case
+    context_object_name = 'Cases'
     ordering = ['-updated_at']
     paginate_by = 5
 
-class IncarcerationCreateView(SuccessMessageMixin, CreateView):
-    model = Incarceration
-    form_class = IncarcerationForm
-    success_message = "The incarceration for %(name)s was created successfully."
+class CaseCreateView(SuccessMessageMixin, CreateView):
+    model = Case
+    form_class = CaseForm
+    success_message = "The case for %(name)s was created successfully."
 
     def get_success_message(self, cleaned_data):
         return self.success_message % dict(
@@ -73,13 +73,13 @@ class IncarcerationCreateView(SuccessMessageMixin, CreateView):
             name=self.object.person.name,
         )
 
-class IncarcerationDetailView(DetailView):
-    model = Incarceration
+class CaseDetailView(DetailView):
+    model = Case
 
-class IncarcerationUpdateView(SuccessMessageMixin, UpdateView):
-    model = Incarceration
-    form_class = IncarcerationForm
-    success_message = "The incarceration for %(name)s was created successfully."
+class CaseUpdateView(SuccessMessageMixin, UpdateView):
+    model = Case
+    form_class = CaseForm
+    success_message = "The case for %(name)s was created successfully."
 
     def get_success_message(self, cleaned_data):
         return self.success_message % dict(
@@ -87,22 +87,22 @@ class IncarcerationUpdateView(SuccessMessageMixin, UpdateView):
             name=self.object.person.name,
         )
 
-class IncarcerationDeleteView(SuccessMessageMixin, DeleteView):
-    model = Incarceration
-    success_url = reverse_lazy('incarceration-list')
-    success_message = "The incarceration for %(first_name)s %(last_name)s was deleted successfully."
+class CaseDeleteView(SuccessMessageMixin, DeleteView):
+    model = Case
+    success_url = reverse_lazy('case-list')
+    success_message = "The case for %(first_name)s %(last_name)s was deleted successfully."
 
     def delete(self, request, *args, **kwargs):
         person = self.get_object().person
         messages.success(self.request, self.success_message % person.__dict__)
-        return super(IncarcerationDeleteView, self).delete(request, *args, **kwargs)
+        return super(CaseDeleteView, self).delete(request, *args, **kwargs)
 
 class ContactListView(ListView):
     model = Contact
     context_object_name = 'contacts'
 
     def get_queryset(self):
-        incarcerated_person = get_object_or_404(IncarceratedPerson, pk=self.kwargs.get('pk'))
+        incarcerated_person = get_object_or_404(Client, pk=self.kwargs.get('pk'))
         return incarcerated_person.contacts
 
 class ContactCreateView(SuccessMessageMixin, CreateView):

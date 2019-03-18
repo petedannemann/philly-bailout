@@ -21,7 +21,7 @@ class Person(models.Model):
     def __str__(self):
         return self.name
 
-class IncarceratedPerson(Person):
+class Client(Person):
     PRONOUN_CHOICES = (
         ('MR', 'Mr'),
         ('MRS', 'Mrs'),
@@ -45,7 +45,7 @@ class IncarceratedPerson(Person):
     ok_with_being_photographed = models.BooleanField(default=False)
 
     def get_absolute_url(self):
-        return reverse('incarceratedperson-detail', kwargs={'pk': self.pk})
+        return reverse('client-detail', kwargs={'pk': self.pk})
 
 class Contact(Person):
     email = models.EmailField(blank=False)
@@ -68,8 +68,8 @@ class Facility(models.Model):
     def __str__(self):
         return self.name
 
-class Incarceration(models.Model):
-    person = models.ForeignKey(IncarceratedPerson, on_delete=models.CASCADE, blank=False)
+class Case(models.Model):
+    person = models.ForeignKey(Client, on_delete=models.CASCADE, blank=False)
     referral_date = models.DateField(blank=False)
     referred_by = models.ForeignKey(Contact, on_delete=models.CASCADE, blank=False, related_name='referred_by')
     date_incarcerated = models.DateField()

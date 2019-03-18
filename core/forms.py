@@ -1,15 +1,15 @@
 from django import forms
 
-from core.models import Incarceration, IncarceratedPerson
+from core.models import Case, Client
 
 
 class DateInput(forms.DateInput):
     '''Changing the input type makes this into a datepicker.'''
     input_type = 'date'
 
-class IncarcerationForm(forms.ModelForm):
+class CaseForm(forms.ModelForm):
     class Meta:
-        model = Incarceration
+        model = Case
         fields = '__all__'
         widgets = {
             'referral_date': DateInput(),
@@ -19,14 +19,14 @@ class IncarcerationForm(forms.ModelForm):
             'date_support_call_completed': DateInput(),
         }
 
-class IncarceratedPersonForm(forms.ModelForm):
+class ClientForm(forms.ModelForm):
     class Meta:
-        model = IncarceratedPerson
+        model = Client
         fields = '__all__'
         widgets = {
             'date_of_birth': DateInput(),
         }
 
-class IncarcerationSearchForm(forms.Form):
+class CaseSearchForm(forms.Form):
     first_name = forms.CharField(required=False)
     last_name = forms.CharField(required=False)
