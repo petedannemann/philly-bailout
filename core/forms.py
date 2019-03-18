@@ -1,6 +1,10 @@
 from django import forms
+from django.forms.models import inlineformset_factory
 
-from core.models import Case, Client
+from crispy_forms.helper import FormHelper
+from crispy_forms.layout import Layout, Fieldset
+
+from core.models import Case, Client, Contact
 
 
 class DateInput(forms.DateInput):
@@ -26,7 +30,3 @@ class ClientForm(forms.ModelForm):
         widgets = {
             'date_of_birth': DateInput(),
         }
-
-class CaseSearchForm(forms.Form):
-    first_name = forms.CharField(required=False)
-    last_name = forms.CharField(required=False)

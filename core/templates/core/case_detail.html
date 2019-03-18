@@ -1,104 +1,81 @@
 {% extends "base.html" %}
 {% block content %}
-  <h2>Case Details</h2>
-  <div class="table-responsive">
-    <table class="table table-hover table-bordered" style="width: auto;">
-      <tbody>
-        <tr>
-          <th class="table-active">Name</th>
-          <td>
-            <a class="mr-2" href="{% url 'incarceratedperson-detail' case.person.id %}">
-              {{ case.person.name }}
-            </a>
-          </td>
-        </tr>
-        <tr>
-          <th class="table-active">Referral Date</th>
-          <td>{{ case.referral_date }}</td>
-        </tr>
-        <tr>
-          <th class="table-active">Referred By</th>
-          <td>{{ case.referred_by }}</td>
-        </tr>
-        <tr>
-          <th class="table-active">Date Incarcerated</th>
-          <td>{{ case.date_incarcerated }}</td>
-        </tr>
-        <tr>
-          <th class="table-active">Date Bail Set</th>
-          <td>{{ case.date_bail_set }}</td>
-        </tr>
-        <tr>
-          <th class="table-active">Date of Jail Interview</th>
-          <td>{{ case.date_of_jail_interview }}</td>
-        </tr>
-        <tr>
-          <th class="table-active">Bail Amount</th>
-          <td>${{ case.bail_amount }}</td>
-        </tr>
-        <tr>
-          <th class="table-active">Facility</th>
-          <td>{{ case.facility }}</td>
-        </tr>
-        <tr>
-          <th class="table-active">Docket Number</th>
-          <td>{{ case.docket_number }}</td>
-        </tr>
-        <tr>
-          <th class="table-active">Support Caller</th>
-          <td>{{ case.support_caller }} <{{ case.support_caller.email }}></td>
-        </tr>
-        <tr>
-          <th class="table-active">Date Support Call Completed</th>
-          <td>{{ case.date_support_call_completed }}</td>
-        </tr>
-        <tr>
-          <th class="table-active">Support Funding Source</th>
-          <td>{{ case.support_funding_source }}</td>
-        </tr>
-        <tr>
-          <th class="table-active">Opt in for Additional Resources</th>
-          <td>{{ case.opt_in_for_additional_resources|yesno:"Yes,No" }}</td>
-        </tr>
-        <tr>
-          <th class="table-active">Created At</th>
-          <td>{{ case.created_at }}</td>
-        </tr>
-        <tr>
-          <th class="table-active">Updated At</th>
-          <td>{{ case.updated_at }}</td>
-      </tbody>
-    </table>
-  </div>
-  <h2>Contacts</h2>
-  <div class="table-responsive">
-    <table class="table table-hover table-striped table-bordered" style="width: auto;">
-      <thead>
-        <tr>
-          <th scope="col">Name</th>
-          <th scope="col">Phone Number</th>
-          <th scope="col">Email</th>
-          <th scope="col">Notes</th>
-          <th scope="col">Created At</th>
-          <th scope="col">Last Updated</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>
-            {{ case.contacts.name }}
-          </td>
-          <td>{{ case.contacts.phone_number }}</td>
-          <td>{{ case.contacts.email }}</td>
-          <td>{{ case.contacts.notes }}</td>
-          <td>{{ case.contacts.created_at }}</td>
-          <td>{{ case.contacts.updated_at }}</td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-    <div>
-      <a class="btn btn-secondary btn-sm mt-1 mb-1" href="{% url 'case-update' object.id %}">Update Case Information</a>
-      <a class="btn btn-danger btn-sm mt-1 mb-1" href="{% url 'case-delete' object.id %}">Delete Case</a>
+  <div style="margin:auto;" align="center">
+    <h2>Case Details</h2>
+    <div class="table-responsive">
+      <table class="table table-hover table-bordered" style="width: auto;">
+        <tbody>
+          <tr>
+            <th class="table-active">Name</th>
+            <td>
+              <a class="mr-2" href="{% url 'client-detail' object.person.id %}">
+                {{ object.person.name }}
+              </a>
+            </td>
+          </tr>
+          <tr>
+            <th class="table-active">Referral Date</th>
+            <td>{{ object.referral_date }}</td>
+          </tr>
+          <tr>
+            <th class="table-active">Referred By</th>
+            <td>{{ object.referred_by }}</td>
+          </tr>
+          <tr>
+            <th class="table-active">Date Incarcerated</th>
+            <td>{{ object.date_incarcerated }}</td>
+          </tr>
+          <tr>
+            <th class="table-active">Date Bail Set</th>
+            <td>{{ object.date_bail_set }}</td>
+          </tr>
+          <tr>
+            <th class="table-active">Date of Jail Interview</th>
+            <td>{{ object.date_of_jail_interview }}</td>
+          </tr>
+          <tr>
+            <th class="table-active">Bail Amount</th>
+            <td>${{ object.bail_amount }}</td>
+          </tr>
+          <tr>
+            <th class="table-active">Facility</th>
+            <td>{{ object.facility }}</td>
+          </tr>
+          <tr>
+            <th class="table-active">Docket Number</th>
+            <td>{{ object.docket_number }}</td>
+          </tr>
+          <tr>
+            <th class="table-active">Support Caller</th>
+            <td>
+              {{ object.support_caller }} {% if object.support_caller.email %}<{{ object.support_caller.email }}>{% endif %}
+            </td>
+          </tr>
+          <tr>
+            <th class="table-active">Date Support Call Completed</th>
+            <td>{{ object.date_support_call_completed }}</td>
+          </tr>
+          <tr>
+            <th class="table-active">Support Funding Source</th>
+            <td>{{ object.support_funding_source }}</td>
+          </tr>
+          <tr>
+            <th class="table-active">Opt in for Additional Resources</th>
+            <td>{{ object.opt_in_for_additional_resources|yesno:"Yes,No" }}</td>
+          </tr>
+          <tr>
+            <th class="table-active">Created At</th>
+            <td>{{ object.created_at }}</td>
+          </tr>
+          <tr>
+            <th class="table-active">Updated At</th>
+            <td>{{ object.updated_at }}</td>
+        </tbody>
+      </table>
     </div>
+    <div>
+      <a class="btn btn-secondary btn-sm mt-1 mb-1" href="{% url 'case-update' object.person.id object.pk %}">Update Case Information</a>
+      <a class="btn btn-danger btn-sm mt-1 mb-1" href="{% url 'case-delete' object.person.id object.pk %}">Delete Case</a>
+    </div>
+  </div>
 {% endblock content %}

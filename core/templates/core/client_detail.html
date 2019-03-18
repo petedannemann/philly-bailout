@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% block content %}
   <div class="row" style="margin:auto;" align="center">
-    <div class="col-sm">
+    <div class="col-4">
       <h2>Client Details</h2>
       <div class="table-responsive">
         <table class="table table-hover table-bordered" style="width: auto;">
@@ -54,7 +54,7 @@
       <a class="btn btn-secondary btn-sm mt-1 mb-1" href="{% url 'client-update' object.id %}">Update Client Information</a>
       <a class="btn btn-danger btn-sm mt-1 mb-1" href="{% url 'client-delete' object.id %}">Delete Client</a>
     </div>
-    <div class="col-sm">
+    <div class="col-8">
       <h2>Cases</h2>
       {% if object.cases %}
         <div class="table-responsive">
@@ -78,7 +78,7 @@
                   <td>{{ case.created_at }}</td>
                   <td>{{ case.updated_at }}</td>
                   <td>
-                    <a class="mr-2" href="{% url 'case-detail' case.id %}">
+                    <a class="mr-2" href="{% url 'case-detail' object.pk case.id %}">
                       Link
                     </a>
                   </td>
