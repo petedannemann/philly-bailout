@@ -1,56 +1,98 @@
 {% extends "base.html" %}
 {% block content %}
-  <h2>Client Details</h2>
-  <div class="table-responsive">
-    <table class="table table-hover table-bordered" style="width: auto;">
-      <tbody>
-        <tr>
-          <th class="table-active">Name</th>
-          <td>
-            {% if object.pronoun %}{{ object.pronoun }}{% endif %} {{ object.first_name}} {{ object.last_name }}
-          </td>
-        </tr>
-        <tr>
-          <th class="table-active">Race</th>
-          <td>{{ object.race }}</td>
-        </tr>
-        <tr>
-          <th class="table-active">Date of Birth</th>
-          <td>{{ object.date_of_birth }}</td>
-        </tr>
-        <tr>
-          <th class="table-active">Open to Speaking to the Press</th>
-          <td>
-            {{ object.open_to_speaking_to_the_press|yesno:"Yes,No" }}
-          </td>
-        </tr>
-        <tr>
-          <th class="table-active">Ok with Being Photographed</th>
-          <td>
-            {{ object.ok_with_being_photographed|yesno:"Yes,No" }}
-          </td>
-        </tr>
-        <tr>
-          <th class="table-active">Phone Number</th>
-          <td>{{ object.phone_number }}</td>
-        </tr>
-        <tr>
-          <th class="table-active">Notes</th>
-          <td>{{ object.notes }}</td>
-        </tr>
-        <tr>
-          <th class="table-active">Created At</th>
-          <td>{{ object.created_at }}</td>
-        </tr>
-        <tr>
-          <th class="table-active">Updated At</th>
-          <td>{{ object.updated_at }}</td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-  <div>
-    <a class="btn btn-secondary btn-sm mt-1 mb-1" href="{% url 'client-update' object.id %}">Update</a>
-    <a class="btn btn-danger btn-sm mt-1 mb-1" href="{% url 'client-delete' object.id %}">Delete</a>
+  <div class="row" style="margin:auto;" align="center">
+    <div class="col-sm">
+      <h2>Client Details</h2>
+      <div class="table-responsive">
+        <table class="table table-hover table-bordered" style="width: auto;">
+          <tbody>
+            <tr>
+              <th class="table-active">Name</th>
+              <td>
+                {% if object.pronoun %}{{ object.pronoun }}{% endif %} {{ object.first_name}} {{ object.last_name }}
+              </td>
+            </tr>
+            <tr>
+              <th class="table-active">Race</th>
+              <td>{{ object.race }}</td>
+            </tr>
+            <tr>
+              <th class="table-active">Date of Birth</th>
+              <td>{{ object.date_of_birth }}</td>
+            </tr>
+            <tr>
+              <th class="table-active">Open to Speaking to the Press</th>
+              <td>
+                {{ object.open_to_speaking_to_the_press|yesno:"Yes,No" }}
+              </td>
+            </tr>
+            <tr>
+              <th class="table-active">Ok with Being Photographed</th>
+              <td>
+                {{ object.ok_with_being_photographed|yesno:"Yes,No" }}
+              </td>
+            </tr>
+            <tr>
+              <th class="table-active">Phone Number</th>
+              <td>{{ object.phone_number }}</td>
+            </tr>
+            <tr>
+              <th class="table-active">Notes</th>
+              <td>{{ object.notes }}</td>
+            </tr>
+            <tr>
+              <th class="table-active">Created At</th>
+              <td>{{ object.created_at }}</td>
+            </tr>
+            <tr>
+              <th class="table-active">Updated At</th>
+              <td>{{ object.updated_at }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <a class="btn btn-secondary btn-sm mt-1 mb-1" href="{% url 'client-update' object.id %}">Update Client Information</a>
+      <a class="btn btn-danger btn-sm mt-1 mb-1" href="{% url 'client-delete' object.id %}">Delete Client</a>
+    </div>
+    <div class="col-sm">
+      <h2>Cases</h2>
+      {% if object.cases %}
+        <div class="table-responsive">
+          <table class="table table-hover table-striped table-bordered" style="width: auto;">
+            <thead>
+              <tr>
+                <th scope="col">Date Incarcerated</th>
+                <th scope="col">Date Bail Set</th>
+                <th scope="col">Date of Jail Interview</th>
+                <th scope="col">Created At</th>
+                <th scope="col">Last Updated</th>
+                <th scope="col">Details</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for case in object.cases %}
+                <tr>
+                  <td>{{ case.date_incarcerated }}</td>
+                  <td>{{ case.date_bail_set }}</td>
+                  <td>{{ case.date_of_jail_interview }}</td>
+                  <td>{{ case.created_at }}</td>
+                  <td>{{ case.updated_at }}</td>
+                  <td>
+                    <a class="mr-2" href="{% url 'case-detail' case.id %}">
+                      Link
+                    </a>
+                  </td>
+                </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      {% else %}
+        <p>This client has no cases.</p>
+      {% endif %}
+      <a class="btn btn-primary" href="{% url 'case-create' object.id %}">
+        Create a Case
+      </a>
+    </div>
   </div>
 {% endblock content %}

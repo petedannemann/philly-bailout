@@ -10,7 +10,7 @@ class DateInput(forms.DateInput):
 class CaseForm(forms.ModelForm):
     class Meta:
         model = Case
-        fields = '__all__'
+        exclude = ('person',)
         widgets = {
             'referral_date': DateInput(),
             'date_incarcerated': DateInput(),

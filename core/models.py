@@ -18,6 +18,10 @@ class Person(models.Model):
     def name(self):
         return f'{self.first_name} {self.last_name}'
 
+    @property
+    def cases(self):
+        return Case.objects.filter(person=self.pk)
+
     def __str__(self):
         return self.name
 

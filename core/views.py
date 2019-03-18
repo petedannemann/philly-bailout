@@ -21,6 +21,12 @@ from core.forms import (
 )
 
 
+class ClientListView(ListView):
+    model = Client
+    context_object_name = 'clients'
+    ordering = ['-updated_at']
+    paginate_by = 5
+
 class ClientCreateView(SuccessMessageMixin, CreateView):
     model = Client
     form_class = ClientForm
@@ -48,17 +54,21 @@ class ClientUpdateView(SuccessMessageMixin, UpdateView):
 
 class ClientDeleteView(SuccessMessageMixin, DeleteView):
     model = Client
-    success_url = reverse_lazy('cases-list')
+    success_url = reverse_lazy('client-list')
     success_message = "%(name)s was deleted successfully."
 
     def delete(self, request, *args, **kwargs):
         obj = self.get_object()
-        messages.success(self.request, self.success_message % obj.__dict__)
+        messages.success(
+            self.request, self.success_message % dict(
+                name=obj.name,
+            )
+        )
         return super(ClientDeleteView, self).delete(request, *args, **kwargs)
 
 class CaseListView(ListView):
     model = Case
-    context_object_name = 'Cases'
+    context_object_name = 'cases'
     ordering = ['-updated_at']
     paginate_by = 5
 
@@ -66,6 +76,18 @@ class CaseCreateView(SuccessMessageMixin, CreateView):
     model = Case
     form_class = CaseForm
     success_message = "The case for %(name)s was created successfully."
+
+    def get_context_data(self, **kwargs):
+        context = super(CaseCreateView, self).get_context_data(**kwargs)
+        client_id = self.kwargs['client_id']
+        client = Client.objects.get(pk=int(client_id))
+        context['client'] = client
+        return context
+
+    def form_valid(self, form):
+        case = form.save(commit=False)
+        case.person = form.data['person']
+        return super(CaseCreateView, self).form_valid(form)
 
     def get_success_message(self, cleaned_data):
         return self.success_message % dict(
