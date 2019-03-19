@@ -10,22 +10,33 @@
             <th scope="col">Phone Number</th>
             <th scope="col">Created At</th>
             <th scope="col">Last Updated</th>
+            <th scope="col">Edit</th>
           </tr>
         </thead>
         <tbody>
           {% for client in clients %}
             <tr>
               <td>
-                <a class="mr-2" href="{% url 'client-detail' client.id %}">
-                  {{ client.name }}
-                </a>
+                {{ client.name }}
               </td>
               <td>{{ client.phone_number }}</td>
               <td>{{ client.created_at }}</td>
               <td>{{ client.updated_at }}</td>
+              <td>
+                <a href="{% url 'client-detail' client.id %}"><i class="fa fa-eye fa-2x"></i></a>
+                <a href="{% url 'client-update' client.id %}"><i class="fa fa-pencil-square-o fa-lg fa-2x"></i></a>
+                <a href="{% url 'client-delete' client.id %}"><i class="fa fa-trash fa-2x"></i></a>
+              </td>
             </tr>
           {% endfor %}
         </tbody>
+        <tfoot>
+          <tr>
+            <td class="border-0" valign="bottom" align="right">
+              <a class="btn btn-primary pull-right" href="{% url 'client-create' %}">Create a Client</a>
+            </td>
+          </tr>
+        </tfoot>
       </table>
       {% if is_paginated %}
 
@@ -49,8 +60,5 @@
 
       {% endif %}
     </div>
-    <a class="btn btn-primary" href="{% url 'client-create' %}">
-      Create a Client
-    </a>
   </div>
 {% endblock content %}

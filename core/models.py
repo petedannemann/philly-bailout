@@ -58,20 +58,6 @@ class Client(Person):
     def get_absolute_url(self):
         return reverse('client-detail', kwargs={'pk': self.pk})
 
-class Charge(models.Model):
-    name = models.CharField(max_length=255, unique=True, blank=False)
-
-    def __str__(self):
-        return self.name
-
-class Facility(models.Model):
-    name = models.CharField(max_length=255, unique=True, blank=False)
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
-
-    def __str__(self):
-        return self.name
-
 class Case(models.Model):
     FACILITY_CHOICES = (
         ('CURRAN FROMHOLD CORRECTIONAL FACILITY', 'Curran-Fromhold Correctional Facility'),
@@ -80,12 +66,21 @@ class Case(models.Model):
         ('PHILADELPHIA INDUSTRIAL CORRECTIONAL CENTER', 'Philadelphia Industrial Correctional Center'),
     )
 
+    CHARGE_CHOICES = (
+        ('ASSAULT / BATTERY', 'Assault / Battery'),
+        ('BURGLARY', 'Burglary'),
+        ('BRIBERY', 'Bribery'),
+        ('DRUG POSSESSION', 'Drug Possession'),
+        ('THEFT / LARCENY', 'Theft / Larceny'),
+    )
+
     person = models.ForeignKey(Client, on_delete=models.CASCADE, blank=False)
     referral_date = models.DateField(blank=False)
     referred_by = models.CharField(max_length=255, blank=True)
     date_incarcerated = models.DateField()
     date_bail_set = models.DateField()
     date_of_jail_interview = models.DateField()
+    charges = MultiSelectField(choices=CHARGE_CHOICES, blank=False) 
     bail_amount = models.DecimalField(decimal_places=2, max_digits=10, blank=False)
     facility = models.CharField(max_length=255, choices=FACILITY_CHOICES, blank=False)
     docket_number = models.IntegerField()
@@ -108,4 +103,4 @@ class Contact(Person):
     client = models.ForeignKey(Client, on_delete=models.CASCADE, blank=False)
 
     def get_absolute_url(self):
-        return reverse('contact-detail', kwargs={'pk': self.pk})
+        return reverse('contact-detail', kwargs={'client_id': self.client.pk, 'pk': self.pk})

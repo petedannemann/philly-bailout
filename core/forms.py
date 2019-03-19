@@ -30,3 +30,8 @@ class ClientForm(forms.ModelForm):
         widgets = {
             'date_of_birth': DateInput(),
         }
+
+class ContactForm(forms.ModelForm):
+    class Meta:
+        model = Contact
+        exclude = ('client',)

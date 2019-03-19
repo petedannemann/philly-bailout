@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% block content %}
-  <div class="row" style="margin:auto;" align="center">
-    <div class="col-4">
+  <div style="margin:auto;" align="center">
+    <div>
       <h2>Client Details</h2>
       <div class="table-responsive">
         <table class="table table-hover table-bordered" style="width: auto;">
@@ -54,7 +54,7 @@
       <a class="btn btn-secondary btn-sm mt-1 mb-1" href="{% url 'client-update' object.id %}">Update Client Information</a>
       <a class="btn btn-danger btn-sm mt-1 mb-1" href="{% url 'client-delete' object.id %}">Delete Client</a>
     </div>
-    <div class="col-8">
+    <div>
       <h2>Cases</h2>
       {% if object.cases %}
         <div class="table-responsive">
@@ -93,6 +93,43 @@
       <a class="btn btn-primary" href="{% url 'case-create' object.id %}">
         Create a Case
       </a>
+      <h2>Contacts</h2>
+      {% if object.contacts %}
+        <div class="table-responsive">
+          <table class="table table-hover table-striped table-bordered" style="width: auto;">
+            <thead>
+              <tr>
+                <th scope="col">Name</th>
+                <th scope="col">Phone Number</th>
+                <th scope="col">Email</th>
+                <th scope="col">Notes</th>
+                <th scope="col">Created At</th>
+                <th scope="col">Last Updated</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for contact in object.contacts %}
+                <tr>
+                  <td>
+                    <a class="mr-2" href="{% url 'contact-detail' object.pk contact.id %}">
+                      {{ contact.name }}
+                    </a>
+                  </td>
+                  <td>{{ contact.phone_number }}</td>
+                  <td>{{ contact.email }}</td>
+                  <td>{{ contact.notes }}</td>
+                  <td>{{ contact.created_at }}</td>
+                  <td>{{ contact.updated_at }}</td>
+                </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      {% else %}
+        <p>This client has no contacts.</p>
+      {% endif %}
+      <a class="btn btn-primary" href="{% url 'contact-create' object.id %}">
+        Create a Contact
+      </a>
     </div>
-  </div>
 {% endblock content %}

@@ -17,7 +17,7 @@ from core.models import (
     Client, Case, Contact,
 )
 from core.forms import (
-    CaseForm, ClientForm,
+    CaseForm, ClientForm, ContactForm,
 )
 
 
@@ -66,12 +66,6 @@ class ClientDeleteView(SuccessMessageMixin, DeleteView):
         )
         return super(ClientDeleteView, self).delete(request, *args, **kwargs)
 
-class CaseListView(ListView):
-    model = Case
-    context_object_name = 'cases'
-    ordering = ['-updated_at']
-    paginate_by = 5
-
 class CaseCreateView(SuccessMessageMixin, CreateView):
     model = Case
     form_class = CaseForm
@@ -103,7 +97,7 @@ class CaseDetailView(DetailView):
 class CaseUpdateView(SuccessMessageMixin, UpdateView):
     model = Case
     form_class = CaseForm
-    success_message = "The case for %(name)s was created successfully."
+    success_message = "The case for %(name)s was updated successfully."
 
     def get_context_data(self, **kwargs):
         context = super(CaseUpdateView, self).get_context_data(**kwargs)
@@ -138,17 +132,9 @@ class CaseDeleteView(SuccessMessageMixin, DeleteView):
     def get_success_url(self):
         return reverse_lazy('client-detail', kwargs={'pk': self.object.person.pk})
 
-class ContactListView(ListView):
-    model = Contact
-    context_object_name = 'contacts'
-
-    def get_queryset(self):
-        client = get_object_or_404(Client, pk=self.kwargs.get('client_id'))
-        return client.contacts
-
 class ContactCreateView(SuccessMessageMixin, CreateView):
     model = Contact
-    fields = '__all__'
+    form_class = ContactForm
     success_message = "The contact %(name)s was created successfully."
 
     def get_context_data(self, **kwargs):
@@ -162,7 +148,7 @@ class ContactCreateView(SuccessMessageMixin, CreateView):
         case = form.save(commit=False)
         client_id = self.kwargs['client_id']
         client = Client.objects.get(pk=int(client_id))
-        case.person = client
+        case.client = client
         return super(ContactCreateView, self).form_valid(form)
 
     def get_success_message(self, cleaned_data):
@@ -171,27 +157,36 @@ class ContactCreateView(SuccessMessageMixin, CreateView):
             name=self.object.name,
         )
 
+    def get_success_url(self):
+        return reverse_lazy(
+            'contact-detail', 
+            kwargs={
+                'client_id': self.object.client.id,
+                'pk': self.object.pk
+            }
+        )
+
 class ContactDetailView(DetailView):
     model = Contact
 
 class ContactUpdateView(SuccessMessageMixin, UpdateView):
     model = Contact
-    fields = '__all__'
+    form_class = ContactForm
     success_message = "The contact %(name)s was updated successfully."
 
     def get_context_data(self, **kwargs):
-        context = super(ContactCreateView, self).get_context_data(**kwargs)
+        context = super(ContactUpdateView, self).get_context_data(**kwargs)
         client_id = self.kwargs['client_id']
         client = Client.objects.get(pk=int(client_id))
         context['client'] = client
         return context
 
     def form_valid(self, form, **kwargs):
-        case = form.save(commit=False)
+        contact = form.save(commit=False)
         client_id = self.kwargs['client_id']
         client = Client.objects.get(pk=int(client_id))
-        case.person = client
-        return super(ContactCreateView, self).form_valid(form)
+        contact.person = client
+        return super(ContactUpdateView, self).form_valid(form)
 
     def get_success_message(self, cleaned_data):
         return self.success_message % dict(
@@ -202,9 +197,12 @@ class ContactUpdateView(SuccessMessageMixin, UpdateView):
 class ContactDeleteView(SuccessMessageMixin, DeleteView):
     model = Contact
     success_url = reverse_lazy('contact-list')
-    success_message = "The contact %(name)s was deleted successfully."
+    success_message = "The contact %(first_name)s %(last_name)s was deleted successfully."
 
     def delete(self, request, *args, **kwargs):
         obj = self.get_object()
         messages.success(self.request, self.success_message % obj.__dict__)
         return super(ContactDeleteView, self).delete(request, *args, **kwargs)
+
+    def get_success_url(self):
+        return reverse_lazy('client-detail', kwargs={'pk': self.object.client.pk})

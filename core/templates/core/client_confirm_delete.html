@@ -1,11 +1,11 @@
 {% extends "base.html" %}
 {% block content %}
-  <div class="content-section">
+  <div class="content-section" align="center">
     <form method="POST">
       {% csrf_token %}
       <fieldset class="form-group">
         <legend class="border-bottom mb-4">Delete Client</legend>
-        <h2>Are you sure you want to delete the client "{{ object.first_name }} {{ object.last_name }}"</h2>
+        <p>Are you sure you want to delete the client "{{ object.first_name }} {{ object.last_name }}"</p>
       </fieldset>
       <div class="form-group">
         <button class="btn btn-outline-danger" type="submit">Yes, Delete</button>
